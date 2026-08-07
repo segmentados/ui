@@ -14,9 +14,14 @@ export { applyThemeVars } from './theme/cssVars';
 // primitives
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from './primitives/Button';
 export { Input, type InputProps } from './primitives/Input';
+export { Textarea, type TextareaProps } from './primitives/Textarea';
 export { Select, type SelectProps, type SelectOption } from './primitives/Select';
 export { Card, CardHeader, CardTitle, CardDescription, type CardProps } from './primitives/Card';
 export { Badge, type BadgeProps, type BadgeTone } from './primitives/Badge';
+export { Chip, type ChipProps } from './primitives/Chip';
+export { Alert, type AlertProps } from './primitives/Alert';
+export { Typography, type TypographyProps } from './primitives/Typography';
+export type { ColorVariant, SizeVariant, AlertVariant } from './primitives/types';
 export { Spinner, PageLoader } from './primitives/Spinner';
 export { Avatar, type AvatarProps } from './primitives/Avatar';
 export { Kbd, modKey } from './primitives/Kbd';
@@ -37,4 +42,4 @@ export { EnvironmentSwitcher, type EnvironmentOption } from './shell/Environment
 export { BackToAppButton } from './shell/BackToAppButton';
 export { LanguageMenu, type LanguageOption } from './shell/LanguageMenu';
 export { PageHeader, type PageHeaderProps } from './shell/PageHeader';
-export { AppSidebar, type AppSidebarProps, type SidebarNavItem, type SidebarNavSection } from './shell/AppSidebar';
+export { AppSidebar, type AppSidebarProps, type SidebarNavItem, type SidebarNavSection, type SidebarIcon, type RenderLink } from './shell/AppSidebar';
