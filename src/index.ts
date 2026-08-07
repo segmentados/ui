@@ -26,7 +26,7 @@ export { Spinner, PageLoader } from './primitives/Spinner';
 export { Avatar, type AvatarProps } from './primitives/Avatar';
 export { Kbd, modKey } from './primitives/Kbd';
 export { Skeleton } from './primitives/Skeleton';
-export { Modal, type ModalProps } from './primitives/Modal';
+export { Modal, ModalHeader, ModalBody, ModalFooter, type ModalProps } from './primitives/Modal';
 export { Menu, MenuItem, MenuSeparator, MenuLabel, type MenuProps, type MenuItemProps } from './primitives/Menu';
 export { Tooltip, type TooltipProps } from './primitives/Tooltip';
 export { EmptyState, type EmptyStateProps } from './primitives/EmptyState';
