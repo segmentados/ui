@@ -1,11 +1,14 @@
 import type { HTMLAttributes } from 'react';
 import { cn } from '../utils/cn';
 
-export type BadgeTone = 'neutral' | 'primary' | 'success' | 'warning' | 'error' | 'info';
+export type BadgeTone = 'neutral' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
 
 const TONE: Record<BadgeTone, string> = {
   neutral: 'bg-[var(--muted)] text-[var(--muted-foreground)]',
   primary: 'bg-[var(--primary)]/12 text-[var(--primary)]',
+  // El token --secondary ya existia (y Button ya exponia la variante); a Badge le faltaba, asi que sus
+  // consumidores pasaban tone="secondary" y no compilaban.
+  secondary: 'bg-[var(--secondary)]/15 text-[var(--secondary)]',
   success: 'bg-[var(--success)]/15 text-[var(--success)]',
   warning: 'bg-[var(--warning)]/15 text-[var(--warning)]',
   error: 'bg-[var(--error)]/15 text-[var(--error)]',

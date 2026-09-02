@@ -1,5 +1,5 @@
-import type { ComponentType, ReactNode } from 'react';
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { useState, type ComponentType, type ReactNode } from 'react';
+import { ChevronDown, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { Tooltip } from '../primitives/Tooltip';
 import { cn } from '../utils/cn';
 
@@ -7,20 +7,36 @@ import { cn } from '../utils/cn';
  * Sidebar de la suite, reutilizable por marca. Marca-agnóstico y framework-agnóstico: usa <a> + un
  * `activePath` (lo calcula la app host) en vez de react-router, así sirve tanto en apps SPA como en Astro.
  * La data (nav, brand, permisos, estado de colapso) la inyecta el host. Package-ready para @segmentados/ui.
+ *
+ * Soporta grupos ANIDADOS colapsables (`item.children`, recursivo) e íconos como componente
+ * (`ComponentType`) o emoji/texto (`string`). BI usa items planos con ícono componente: sigue igual.
  */
+export type SidebarIcon = ComponentType<{ className?: string }> | string;
+
 export interface SidebarNavItem {
   id: string;
   label: string;
-  path: string;
-  icon: ComponentType<{ className?: string }>;
+  /** Ruta destino. Opcional: un grupo sólo-cabecera (con children y sin path) alterna el colapso al click. */
+  path?: string;
+  icon?: SidebarIcon;
   permission?: string;
   soon?: boolean;
+  /** Hijos → el item es un grupo colapsable (recursivo). */
+  children?: SidebarNavItem[];
 }
 export interface SidebarNavSection {
   id: string;
   label?: string;
   items: SidebarNavItem[];
 }
+
+export type RenderLink = (props: {
+  href: string;
+  active: boolean;
+  className: string;
+  onClick?: () => void;
+  children: ReactNode;
+}) => ReactNode;
 
 export interface AppSidebarProps {
   nav: SidebarNavSection[];
@@ -36,12 +52,14 @@ export interface AppSidebarProps {
   onNavigate?: () => void;
   /**
    * Render del link. Default `<a href>` (sirve para Astro/MPA). En una SPA (react-router) pasá tu
-   * `Link` acá para navegación cliente: `renderLink={(p) => <Link to={p.href} className={p.className} onClick={p.onClick}>{p.children}</Link>}`.
+   * `Link` acá: `renderLink={(p) => <Link to={p.href} className={p.className} onClick={p.onClick}>{p.children}</Link>}`.
    */
-  renderLink?: (props: { href: string; active: boolean; className: string; onClick?: () => void; children: ReactNode }) => ReactNode;
+  renderLink?: RenderLink;
 }
 
-function defaultRenderLink({ href, active, className, onClick, children }: { href: string; active: boolean; className: string; onClick?: () => void; children: ReactNode }) {
+function defaultRenderLink({ href, active, className, onClick, children }: {
+  href: string; active: boolean; className: string; onClick?: () => void; children: ReactNode;
+}) {
   return (
     <a href={href} onClick={onClick} aria-current={active ? 'page' : undefined} className={className}>
       {children}
@@ -49,10 +67,153 @@ function defaultRenderLink({ href, active, className, onClick, children }: { hre
   );
 }
 
-function isActive(itemPath: string, activePath?: string): boolean {
-  if (!activePath) return false;
+function isActive(itemPath: string | undefined, activePath?: string): boolean {
+  if (!itemPath || !activePath) return false;
   if (itemPath === '/') return activePath === '/';
   return activePath === itemPath || activePath.startsWith(itemPath + '/');
+}
+
+/** ¿El item o algún descendiente matchea el path activo? (para abrir el grupo correcto). */
+function anyActive(item: SidebarNavItem, activePath?: string): boolean {
+  if (isActive(item.path, activePath)) return true;
+  return (item.children ?? []).some((c) => anyActive(c, activePath));
+}
+
+function Glyph({ icon, className }: { icon?: SidebarIcon; className?: string }) {
+  if (!icon) return <span className={className} aria-hidden />;
+  if (typeof icon === 'string') {
+    return (
+      <span className={cn('inline-flex items-center justify-center text-[15px] leading-none', className)} aria-hidden>
+        {icon}
+      </span>
+    );
+  }
+  const Icon = icon;
+  return <Icon className={className} />;
+}
+
+const ICON_CLS = 'h-[18px] w-[18px] shrink-0';
+
+function SoonBadge() {
+  return (
+    <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white/60">
+      Pronto
+    </span>
+  );
+}
+
+interface NodeProps {
+  item: SidebarNavItem;
+  depth: number;
+  activePath?: string;
+  collapsed: boolean;
+  onNavigate?: () => void;
+  hasPermission?: (perm: string) => boolean;
+  renderLink: RenderLink;
+}
+
+function NavNode({ item, depth, activePath, collapsed, onNavigate, hasPermission, renderLink }: NodeProps) {
+  const visibleChildren = (item.children ?? []).filter(
+    (c) => !c.permission || !hasPermission || hasPermission(c.permission),
+  );
+  const hasChildren = visibleChildren.length > 0;
+  const active = isActive(item.path, activePath);
+  const descendantActive = hasChildren && visibleChildren.some((c) => anyActive(c, activePath));
+  const [open, setOpen] = useState(descendantActive);
+
+  const rowCls = (extra?: string) =>
+    cn(
+      'group flex items-center gap-3 rounded-lg py-2 text-[13px] font-medium transition-colors',
+      collapsed ? 'justify-center px-0' : 'px-2.5',
+      active ? 'bg-white/15 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white',
+      extra,
+    );
+  const indent = !collapsed && depth > 0 ? { paddingLeft: 10 + depth * 14 } : undefined;
+
+  // Hoja: link simple.
+  if (!hasChildren) {
+    const link = renderLink({
+      href: item.path ?? '#',
+      active,
+      className: rowCls(),
+      onClick: onNavigate,
+      children: (
+        <>
+          <Glyph icon={item.icon} className={ICON_CLS} />
+          {!collapsed && (
+            <>
+              <span className="flex-1 truncate">{item.label}</span>
+              {item.soon && <SoonBadge />}
+            </>
+          )}
+        </>
+      ),
+    });
+    if (collapsed) {
+      return <Tooltip content={item.label} side="right">{link}</Tooltip>;
+    }
+    return <div style={indent}>{link}</div>;
+  }
+
+  // Grupo colapsable. En modo colapsado mostramos sólo el ícono (tooltip) y no expandimos inline.
+  const label = (
+    <>
+      <Glyph icon={item.icon} className={ICON_CLS} />
+      {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
+    </>
+  );
+
+  const header =
+    item.path && !collapsed ? (
+      // Cabecera navegable (link a su página) + chevron separado que alterna el colapso.
+      <div className="flex items-center" style={indent}>
+        {renderLink({ href: item.path, active, className: rowCls('flex-1 min-w-0'), onClick: onNavigate, children: label })}
+        <button
+          type="button"
+          aria-label={open ? 'Colapsar' : 'Expandir'}
+          aria-expanded={open}
+          onClick={() => setOpen((o) => !o)}
+          className="shrink-0 rounded-lg px-2 py-2 text-white/60 hover:bg-white/10 hover:text-white"
+        >
+          <ChevronDown className={cn('h-4 w-4 transition-transform', open && 'rotate-180')} />
+        </button>
+      </div>
+    ) : (
+      // Cabecera sólo-toggle (grupo header-only, o colapsado).
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+        className={rowCls('w-full')}
+        style={indent}
+        title={collapsed ? item.label : undefined}
+      >
+        {label}
+        {!collapsed && <ChevronDown className={cn('h-4 w-4 transition-transform', open && 'rotate-180')} />}
+      </button>
+    );
+
+  return (
+    <div>
+      {collapsed ? <Tooltip content={item.label} side="right">{header}</Tooltip> : header}
+      {open && !collapsed && (
+        <div className="mt-0.5 space-y-0.5">
+          {visibleChildren.map((child) => (
+            <NavNode
+              key={child.id}
+              item={child}
+              depth={depth + 1}
+              activePath={activePath}
+              collapsed={collapsed}
+              onNavigate={onNavigate}
+              hasPermission={hasPermission}
+              renderLink={renderLink}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function AppSidebar({
@@ -67,7 +228,7 @@ export function AppSidebar({
   renderLink = defaultRenderLink,
 }: AppSidebarProps) {
   const collapsed = mobile ? false : collapsedProp;
-  const visible = (item: SidebarNavItem) => !item.permission || !hasPermission || hasPermission(item.permission);
+  const topVisible = (item: SidebarNavItem) => !item.permission || !hasPermission || hasPermission(item.permission);
 
   return (
     <aside
@@ -86,7 +247,7 @@ export function AppSidebar({
 
       <nav className="flex-1 space-y-4 overflow-y-auto px-2.5 py-3">
         {nav.map((section) => {
-          const items = section.items.filter(visible);
+          const items = section.items.filter(topVisible);
           if (items.length === 0) return null;
           return (
             <div key={section.id}>
@@ -96,43 +257,18 @@ export function AppSidebar({
                 </div>
               )}
               <div className="space-y-0.5">
-                {items.map((item) => {
-                  const Icon = item.icon;
-                  const active = isActive(item.path, activePath);
-                  const className = cn(
-                    'group flex items-center gap-3 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-colors',
-                    collapsed && 'justify-center px-0',
-                    active ? 'bg-white/15 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white',
-                  );
-                  const link = renderLink({
-                    href: item.path,
-                    active,
-                    className,
-                    onClick: onNavigate,
-                    children: (
-                      <>
-                        <Icon className="h-[18px] w-[18px] shrink-0" />
-                        {!collapsed && (
-                          <>
-                            <span className="flex-1 truncate">{item.label}</span>
-                            {item.soon && (
-                              <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white/60">
-                                Pronto
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </>
-                    ),
-                  });
-                  return collapsed ? (
-                    <Tooltip key={item.id} content={item.label} side="right">
-                      {link}
-                    </Tooltip>
-                  ) : (
-                    <div key={item.id}>{link}</div>
-                  );
-                })}
+                {items.map((item) => (
+                  <NavNode
+                    key={item.id}
+                    item={item}
+                    depth={0}
+                    activePath={activePath}
+                    collapsed={collapsed}
+                    onNavigate={onNavigate}
+                    hasPermission={hasPermission}
+                    renderLink={renderLink}
+                  />
+                ))}
               </div>
             </div>
           );
