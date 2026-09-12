@@ -21,7 +21,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
         disabled={disabled}
         aria-invalid={error || undefined}
         className={cn(
-          'w-full rounded-lg border bg-[var(--surface)] px-3 py-2 text-sm text-[var(--foreground)]',
+          'w-full rounded-[var(--radius-lg)] border bg-[var(--surface-input)] px-3 py-2 text-[13px] text-[var(--foreground)]',
+          // Hueco: el campo se lee como algo que se LLENA, no como una superficie más. Es la contracara del
+          // relieve de los botones — sin algo hundido, nada parece sobresalir.
+          'shadow-[var(--shadow-well)]',
           'placeholder:text-[var(--muted-foreground)]',
           'transition-shadow outline-none focus:ring-2 focus:ring-[var(--ring)]',
           'disabled:cursor-not-allowed disabled:opacity-60',

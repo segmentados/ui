@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { getPortalHost } from '../theme/portalHost';
 import { CheckCircle2, Info, TriangleAlert, XCircle, X } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { useToastStore, type Toast, type ToastTone } from './toastStore';
@@ -32,7 +33,7 @@ function ToastCard({ toast }: { toast: Toast }) {
     <div
       role="status"
       className={cn(
-        'pointer-events-auto flex w-80 items-start gap-3 rounded-xl border border-[var(--border)] bg-[var(--card)] p-3 shadow-xl',
+        'pointer-events-auto flex w-80 items-start gap-3 rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface-card)] p-3 shadow-[var(--shadow-lg)]',
         'animate-[toastIn_.18s_ease-out]',
       )}
     >
@@ -64,6 +65,6 @@ export function Toaster() {
       ))}
       <style>{`@keyframes toastIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}`}</style>
     </div>,
-    document.body,
+    getPortalHost() ?? document.body,
   );
 }

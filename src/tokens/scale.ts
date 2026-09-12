@@ -8,9 +8,9 @@ export const spacing = {
   0: 0, 1: 4, 2: 8, 3: 12, 4: 16, 5: 20, 6: 24, 8: 32, 10: 40, 12: 48, 16: 64, 20: 80, 24: 96,
 } as const;
 
-/** Radios de borde (px). */
+/** Radios de borde (px). Espejan los tokens `--radius-*` que emite el tema. */
 export const radius = {
-  none: 0, sm: 4, md: 8, lg: 12, xl: 16, '2xl': 20, full: 9999,
+  none: 0, xs: 4, sm: 6, md: 8, lg: 12, xl: 16, '2xl': 20, pill: 9999, full: 9999,
 } as const;
 
 /** Tipografía: familias, tamaños (px) y pesos. */
@@ -19,8 +19,13 @@ export const typography = {
     sans: 'Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     mono: 'ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace',
   },
+  /**
+   * Data Cloud tipografía densa: la escala arranca en 10 (etiquetas de eje, hints) y el título de
+   * pantalla es 26, no 30. Los pasos 13/15 existen porque el spec los usa para tabla y para título de
+   * tarjeta, y redondearlos a 12/16 cambia la densidad de las listas.
+   */
   fontSize: {
-    xs: 12, sm: 13, base: 14, md: 15, lg: 16, xl: 18, '2xl': 20, '3xl': 24, '4xl': 30, '5xl': 36,
+    '2xs': 10, xs: 11, sm: 12, base: 13, md: 14, lg: 15, xl: 16, '2xl': 18, '3xl': 20, '4xl': 22, '5xl': 26,
   },
   fontWeight: { normal: 400, medium: 500, semibold: 600, bold: 700 },
   lineHeight: { tight: 1.2, normal: 1.5, relaxed: 1.7 },

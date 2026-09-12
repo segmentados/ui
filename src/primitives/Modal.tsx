@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode, type HTMLAttributes } from 'react';
 import { createPortal } from 'react-dom';
+import { getPortalHost } from '../theme/portalHost';
 import { X } from 'lucide-react';
 import { cn } from '../utils/cn';
 
@@ -83,7 +84,7 @@ export function Modal({
         ref={panelRef}
         tabIndex={-1}
         className={cn(
-          'relative z-10 w-full rounded-2xl border border-[var(--border)] bg-[var(--card)] shadow-2xl outline-none',
+          'relative z-10 w-full rounded-[var(--radius-2xl)] border border-[var(--border)] bg-[var(--surface-card)] shadow-[var(--shadow-lg)] outline-none',
           'animate-[modalIn_.16s_ease-out]',
           WIDTH[size],
           className,
@@ -120,7 +121,7 @@ export function Modal({
       </div>
       <style>{`@keyframes modalIn{from{opacity:.4;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}`}</style>
     </div>,
-    document.body,
+    getPortalHost() ?? document.body,
   );
 }
 

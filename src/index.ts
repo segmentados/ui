@@ -9,7 +9,8 @@ export * from './tokens/scale';
 
 // theme
 export { ThemeProvider, useTheme } from './theme/ThemeProvider';
-export { applyThemeVars } from './theme/cssVars';
+export { applyThemeVars, themeCssText } from './theme/cssVars';
+export { getPortalHost } from './theme/portalHost';
 
 // primitives
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from './primitives/Button';
@@ -30,6 +31,25 @@ export { Modal, ModalHeader, ModalBody, ModalFooter, type ModalProps } from './p
 export { Menu, MenuItem, MenuSeparator, MenuLabel, type MenuProps, type MenuItemProps } from './primitives/Menu';
 export { Tooltip, type TooltipProps } from './primitives/Tooltip';
 export { EmptyState, type EmptyStateProps } from './primitives/EmptyState';
+export { Checkbox, type CheckboxProps } from './primitives/Checkbox';
+export { Switch, type SwitchProps } from './primitives/Switch';
+export { Progress, type ProgressProps } from './primitives/Progress';
+export { Divider, type DividerProps } from './primitives/Divider';
+export { PasswordInput, type PasswordInputProps } from './primitives/PasswordInput';
+
+// patrones Data Cloud — mid-level, construidos sobre los primitives
+export { StatCard, StatGrid, type StatCardProps, type StatGridProps, type StatSize } from './patterns/StatCard';
+export { StatusBadge, statusTone, type StatusBadgeProps, type StatusTone } from './patterns/StatusBadge';
+export { WizardSteps, type WizardStep, type WizardStepsProps } from './patterns/WizardSteps';
+export { WizardSummarySidebar, type WizardSummarySidebarProps } from './patterns/WizardSummarySidebar';
+export { SelectableCard, type SelectableCardProps } from './patterns/SelectableCard';
+export { KeyValue, type KeyValueItem, type KeyValueProps } from './patterns/KeyValue';
+export { Collapsible, Accordion, TreeNode, type CollapsibleProps, type AccordionItem, type AccordionProps, type TreeNodeProps } from './patterns/Collapsible';
+export { SegmentedToggle, type SegmentedOption, type SegmentedToggleProps } from './patterns/SegmentedToggle';
+export { SearchBar, FilterBar, type SearchBarProps, type FilterBarProps } from './patterns/SearchBar';
+export { ListItemRow, NavigationCard, type ListItemRowProps, type NavigationCardProps } from './patterns/ListItemRow';
+export { Pagination, type PaginationProps } from './patterns/Pagination';
+export { DataTable, type DataTableProps, type DataTableColumn } from './patterns/DataTable';
 
 // feedback / toasts
 export { Toaster } from './feedback/Toaster';
@@ -42,4 +62,7 @@ export { EnvironmentSwitcher, type EnvironmentOption } from './shell/Environment
 export { BackToAppButton } from './shell/BackToAppButton';
 export { LanguageMenu, type LanguageOption } from './shell/LanguageMenu';
 export { PageHeader, type PageHeaderProps } from './shell/PageHeader';
+// iconografía canónica de Data Cloud
+export { Icon, iconNames, isIconName, type IconName, type IconProps } from './icons/Icon';
+
 export { AppSidebar, type AppSidebarProps, type SidebarNavItem, type SidebarNavSection, type SidebarIcon, type RenderLink } from './shell/AppSidebar';

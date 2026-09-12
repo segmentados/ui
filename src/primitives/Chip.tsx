@@ -5,7 +5,7 @@ import type { ColorVariant, SizeVariant } from './types';
 export interface ChipProps extends HTMLAttributes<HTMLDivElement> {
   color?: ColorVariant;
   size?: SizeVariant;
-  /** `soft` = fondo tintado al 10% + texto en el color pleno; `filled` = relleno sólido. */
+  /** `soft` = fondo tintado al 12% + texto en el color pleno; `filled` = relleno sólido. */
   variant?: 'filled' | 'outlined' | 'soft';
   onDelete?: () => void;
   icon?: ReactNode;
@@ -25,10 +25,10 @@ const colorClasses: Record<'filled' | 'outlined' | 'soft', Record<ColorVariant, 
   filled: {
     primary: 'bg-[var(--primary)] text-[var(--on-primary)]',
     secondary: 'bg-[var(--secondary)] text-[var(--on-secondary)]',
-    success: 'bg-[var(--success)] text-white',
-    error: 'bg-[var(--error)] text-white',
-    warning: 'bg-[var(--warning)] text-white',
-    info: 'bg-[var(--info)] text-white',
+    success: 'bg-[var(--success)] text-[var(--on-primary)]',
+    error: 'bg-[var(--error)] text-[var(--on-primary)]',
+    warning: 'bg-[var(--warning)] text-[var(--on-primary)]',
+    info: 'bg-[var(--info)] text-[var(--on-primary)]',
     dark: 'bg-[var(--foreground)] text-[var(--background)]',
     gray: 'bg-[var(--muted)] text-[var(--foreground)]',
   },
@@ -45,10 +45,10 @@ const colorClasses: Record<'filled' | 'outlined' | 'soft', Record<ColorVariant, 
   soft: {
     primary: 'bg-[color-mix(in_srgb,var(--primary)_12%,transparent)] text-[var(--primary)]',
     secondary: 'bg-[color-mix(in_srgb,var(--secondary)_12%,transparent)] text-[var(--secondary)]',
-    success: 'bg-[color-mix(in_srgb,var(--success)_15%,transparent)] text-[var(--success)]',
-    error: 'bg-[color-mix(in_srgb,var(--error)_15%,transparent)] text-[var(--error)]',
-    warning: 'bg-[color-mix(in_srgb,var(--warning)_15%,transparent)] text-[var(--warning)]',
-    info: 'bg-[color-mix(in_srgb,var(--info)_15%,transparent)] text-[var(--info)]',
+    success: 'bg-[color-mix(in_srgb,var(--success)_12%,transparent)] text-[var(--success)]',
+    error: 'bg-[color-mix(in_srgb,var(--error)_12%,transparent)] text-[var(--error)]',
+    warning: 'bg-[color-mix(in_srgb,var(--warning)_12%,transparent)] text-[var(--warning)]',
+    info: 'bg-[color-mix(in_srgb,var(--info)_12%,transparent)] text-[var(--info)]',
     dark: 'bg-[var(--muted)] text-[var(--foreground)]',
     gray: 'bg-[var(--muted)] text-[var(--muted-foreground)]',
   },

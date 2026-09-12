@@ -51,7 +51,7 @@ export function Menu({ trigger, children, align = 'end', className }: MenuProps)
           id={id}
           onClick={() => setOpen(false)}
           className={cn(
-            'absolute z-[1400] mt-1 min-w-48 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] p-1 shadow-xl',
+            'absolute z-[1400] mt-1 min-w-48 overflow-hidden rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface-card)] p-1 shadow-[var(--shadow-lg)]',
             'animate-[menuIn_.12s_ease-out]',
             align === 'end' ? 'right-0' : 'left-0',
             className,

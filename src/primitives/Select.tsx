@@ -34,7 +34,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         disabled={disabled}
         aria-invalid={isInvalid || undefined}
         className={cn(
-          'w-full appearance-none rounded-lg border bg-[var(--surface)] pl-3 pr-9 text-[var(--foreground)]',
+          'w-full appearance-none rounded-[var(--radius-lg)] border bg-[var(--surface-input)] pl-3 pr-9 text-[var(--foreground)]',
+          // Hueco: el campo se lee como algo que se LLENA, no como una superficie más. Es la contracara del
+          // relieve de los botones — sin algo hundido, nada parece sobresalir.
+          'shadow-[var(--shadow-well)]',
           'transition-shadow focus:outline-none focus:ring-2 focus:ring-[var(--ring)]',
           'disabled:cursor-not-allowed disabled:opacity-60',
           isInvalid ? 'border-[var(--error)]' : 'border-[var(--border-strong)]',

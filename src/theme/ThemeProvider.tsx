@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { DEFAULT_THEME, isThemeName, themeList, themes, type Theme, type ThemeName } from '../tokens/themes';
 import { applyThemeVars } from './cssVars';
+import { getPortalHost } from './portalHost';
 
 const STORAGE_KEY = 'bi.theme';
 
@@ -43,7 +44,12 @@ export function ThemeProvider({
   }, []);
 
   useEffect(() => {
-    applyThemeVars(themes[themeName]);
+    const theme = themes[themeName];
+    applyThemeVars(theme);
+    // Y sobre el host de portales: un modal cuelga de `body`, fuera del árbol de la app, así que si el
+    // consumidor scopea los tokens a un contenedor no los heredaría. Ver `portalHost.ts`.
+    const host = getPortalHost();
+    if (host) applyThemeVars(theme, host);
   }, [themeName]);
 
   const value = useMemo<ThemeContextValue>(() => {

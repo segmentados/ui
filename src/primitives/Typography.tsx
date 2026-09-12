@@ -21,21 +21,34 @@ export interface TypographyProps extends HTMLAttributes<HTMLElement> {
   align?: 'left' | 'center' | 'right' | 'justify';
   gutterBottom?: boolean;
   noWrap?: boolean;
+  /**
+   * Números de ancho fijo. Va explícito y no automático por variante porque lo que lo necesita es el
+   * CONTENIDO, no el tamaño: un KPI que se actualiza o una columna de importes saltan de ancho a cada
+   * cambio de dígito si cada cifra mide distinto.
+   */
+  numeric?: boolean;
 }
 
+/**
+ * Escala Data Cloud: 10 → 26px, no la escala de landing (que llegaba a 60).
+ *
+ * Una pantalla de datos es densa: el título de una pantalla es 26 y el cuerpo 13. Con `text-6xl` un h1
+ * ocupaba un tercio del alto útil y empujaba la tabla —que es lo que la persona vino a mirar— abajo del
+ * pliegue. El `tracking` ajustado en los títulos es lo que evita que a 26px se vean sueltos.
+ */
 const variantClasses: Record<NonNullable<TypographyProps['variant']>, string> = {
-  h1: 'text-6xl font-bold',
-  h2: 'text-5xl font-bold',
-  h3: 'text-4xl font-semibold',
-  h4: 'text-3xl font-semibold',
-  h5: 'text-2xl font-medium',
-  h6: 'text-xl font-medium',
-  subtitle1: 'text-lg font-medium',
-  subtitle2: 'text-base font-medium',
-  body1: 'text-base',
-  body2: 'text-sm',
-  caption: 'text-xs',
-  overline: 'text-xs uppercase tracking-wider',
+  h1: 'text-[26px] font-semibold leading-tight tracking-[var(--tracking-heading)]',
+  h2: 'text-[22px] font-semibold leading-tight tracking-[var(--tracking-heading)]',
+  h3: 'text-[20px] font-semibold leading-tight tracking-[var(--tracking-tighter)]',
+  h4: 'text-[18px] font-semibold tracking-[var(--tracking-tight)]',
+  h5: 'text-[16px] font-semibold',
+  h6: 'text-[15px] font-semibold',
+  subtitle1: 'text-[15px] font-medium',
+  subtitle2: 'text-[13px] font-medium',
+  body1: 'text-[13px]',
+  body2: 'text-[12px]',
+  caption: 'text-[11px]',
+  overline: 'text-[10px] uppercase tracking-wider font-semibold',
 };
 
 const variantMapping: Record<NonNullable<TypographyProps['variant']>, keyof JSX.IntrinsicElements> = {
@@ -63,11 +76,11 @@ const colorClasses: Record<NonNullable<TypographyProps['color']>, string> = {
   warning: 'text-[var(--warning)]',
   info: 'text-[var(--info)]',
   dark: 'text-[var(--foreground)]',
-  gray: 'text-[var(--muted-foreground)]',
+  gray: 'text-[var(--text-muted)]',
   inherit: '',
   textPrimary: 'text-[var(--foreground)]',
   textSecondary: 'text-[var(--muted-foreground)]',
-  textSubtle: 'text-[var(--muted-foreground)]',
+  textSubtle: 'text-[var(--text-subtle)]',
 };
 
 const alignClasses = {
@@ -85,6 +98,7 @@ export const Typography = forwardRef<HTMLElement, TypographyProps>(function Typo
     align = 'left',
     gutterBottom = false,
     noWrap = false,
+    numeric = false,
     className,
     children,
     ...props
@@ -101,6 +115,7 @@ export const Typography = forwardRef<HTMLElement, TypographyProps>(function Typo
         alignClasses[align],
         gutterBottom && 'mb-2',
         noWrap && 'truncate',
+        numeric && 'tabular-nums',
         className,
       )}
       {...props}
