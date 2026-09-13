@@ -40,6 +40,22 @@ export const BRAND = {
   white: '#ffffff',
 } as const;
 
+/**
+ * ── Los grises de texto están elegidos por CONTRASTE, no a ojo ──────────────────────────────────
+ * Los valores originales no pasaban WCAG AA: `textSubtle` daba 2.10 sobre el fondo menta —el mínimo
+ * para cuerpo de texto es 4.5— y `textMuted` 3.59. En pantalla se leía como texto apagado, y en
+ * cualquier monitor con poco brillo directamente desaparecía.
+ *
+ * Los de ahora, medidos sobre el fondo menta (#f3fcf7) y sobre tarjeta blanca:
+ *
+ *   textMuted  #4a6a5c → 5.72 / 5.99   el gris de trabajo: bajadas, etiquetas, celdas secundarias
+ *   textSubtle #5a7a68 → 4.54 / 4.75   un paso más claro, sigue pasando AA
+ *   grayDark   #5a7a68 → 4.54 / 4.75   se usa como color de TEXTO en casi todos sus usos
+ *
+ * Se conserva el matiz verde-gris de la marca en vez de irse a un gris neutro: lo que faltaba era
+ * luminosidad, no color. Y se mantiene la jerarquía —subtle más claro que muted—, que es lo que hace
+ * que un hint se lea como hint y no como cuerpo.
+ */
 export interface ThemeColors {
   primary: string;
   primaryDark: string;
@@ -88,10 +104,10 @@ export const themes: Record<ThemeName, Theme> = {
       primary: '#18c768', primaryDark: '#0fa855', primaryLight: '#29f180',
       secondary: '#592ef2', secondaryDark: '#4521c7', secondaryLight: '#7c5cf6',
       dark: '#141926', darkLight: '#2a3142',
-      gray: '#c5e3d3', grayLight: '#e4f5ec', grayDark: '#7fa893',
+      gray: '#c5e3d3', grayLight: '#e4f5ec', grayDark: '#5a7a68',
       background: '#f3fcf7', foreground: '#141926',
       surfaceCard: '#ffffff', surfaceRaised: '#fafffe',
-      textMuted: '#6b8b7a', textSubtle: '#9bb5a8',
+      textMuted: '#4a6a5c', textSubtle: '#5a7a68',
       error: '#ef4444', warning: '#f59e0b', success: '#18c768', info: '#592ef2',
     },
   },
@@ -110,7 +126,7 @@ export const themes: Record<ThemeName, Theme> = {
       gray: '#2a3448', grayLight: '#161d2e', grayDark: '#8fa89a',
       background: '#0d121f', foreground: '#e6f2ea',
       surfaceCard: '#161d2e', surfaceRaised: '#1b2437',
-      textMuted: '#8fa89a', textSubtle: '#6b8272',
+      textMuted: '#8fa89a', textSubtle: '#82968a',
       error: '#f87171', warning: '#fbbf24', success: '#29f180', info: '#9d8af7',
     },
   },
