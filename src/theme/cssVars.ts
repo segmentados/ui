@@ -76,6 +76,19 @@ function derivedVars(theme: Theme): Record<string, string> {
     '--shadow-sm': '0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.04)',
     '--shadow-md': '0 2px 4px rgba(16, 24, 40, 0.04), 0 6px 16px rgba(16, 24, 40, 0.07)',
     '--shadow-lg': '0 12px 32px rgba(16, 24, 40, 0.10), 0 2px 8px rgba(16, 24, 40, 0.05)',
+    // FLOTANTE: una superficie grande que "sale de la pantalla". Es pariente del relieve, pero resuelve
+    // otro problema: el relieve simula el CANTO de una pieza chica y solida (un boton, el pulgar de un
+    // switch) y sus capas internas no se ven sobre una tarjeta casi blanca.
+    //
+    // Lo que da la sensacion de altura es la PROGRESION, no la opacidad: una sombra de contacto corta y
+    // cerrada que apoya la tarjeta, y dos difusas cada vez mas anchas y mas corridas hacia abajo que la
+    // despegan del fondo. Sin la de contacto flota sin peso; sin las anchas se ve pegada.
+    //
+    // En oscuro la caida necesita mucha mas opacidad: un negro al 12% sobre navy es invisible.
+    '--shadow-float': theme.isDark
+      ? '0 1px 1px rgba(0,0,0,0.40), 0 2px 4px -1px rgba(0,0,0,0.44), 0 8px 16px -6px rgba(0,0,0,0.52), 0 18px 32px -12px rgba(0,0,0,0.56)'
+      : '0 1px 1px rgba(16,24,40,0.05), 0 2px 4px -1px rgba(16,24,40,0.07), 0 8px 16px -6px rgba(16,24,40,0.12), 0 18px 32px -12px rgba(16,24,40,0.14)',
+
     '--shadow-focus': `0 0 0 3px color-mix(in srgb, ${c.primary} 22%, transparent)`,
 
     // Relieve: la pieza sobresale. Cuatro capas — el borde de arriba atrapa la luz, el de abajo queda en

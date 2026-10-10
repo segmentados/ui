@@ -2,7 +2,7 @@ import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { Loader2 } from 'lucide-react';
 import { cn } from '../utils/cn';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success' | 'info' | 'link';
+export type ButtonVariant = 'primary' | 'primary-outline' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success' | 'info' | 'link';
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'icon';
 
 /**
@@ -24,6 +24,12 @@ const hoverSolido = (token: string) => `hover:bg-[color-mix(in_srgb,var(${token}
 const VARIANT: Record<ButtonVariant, string> = {
   primary:
     'bg-[var(--primary)] text-[var(--on-primary)] hover:bg-[var(--primary-dark)] shadow-[var(--shadow-raised)]',
+  // Blanco, borde y letra verdes, EN RELIEVE 3D. Acción principal "suave": el mismo volumen que `primary`
+  // (shadow-raised + se hunde al apretar, por estar en SOLIDOS) pero sobre superficie blanca con la marca en
+  // el borde y el texto. Fondo por token (surface-card = blanco en claro); hover tiñe apenas de verde sin
+  // perder el blanco. Distinta de `outline` (que es plana y neutra).
+  'primary-outline':
+    'border border-[var(--primary)] bg-[var(--surface-card)] text-[var(--primary)] hover:bg-[color-mix(in_srgb,var(--primary)_10%,var(--surface-card))] shadow-[var(--shadow-raised)]',
   secondary:
     `bg-[var(--secondary)] text-[var(--on-secondary)] ${hoverSolido('--secondary')} shadow-[var(--shadow-raised)]`,
   outline:
@@ -36,7 +42,7 @@ const VARIANT: Record<ButtonVariant, string> = {
 };
 
 /** Las variantes con fondo propio: las únicas que pueden estar en relieve y hundirse al apretarlas. */
-const SOLIDOS = new Set<ButtonVariant>(['primary', 'secondary', 'danger', 'success', 'info']);
+const SOLIDOS = new Set<ButtonVariant>(['primary', 'primary-outline', 'secondary', 'danger', 'success', 'info']);
 
 /** Densidad Data Cloud: los botones de app son compactos (13px en `md`), no tipografía de landing. */
 const SIZE: Record<ButtonSize, string> = {
