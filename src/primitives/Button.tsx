@@ -40,11 +40,11 @@ const SOLIDOS = new Set<ButtonVariant>(['primary', 'secondary', 'danger', 'succe
 
 /** Densidad Data Cloud: los botones de app son compactos (13px en `md`), no tipografía de landing. */
 const SIZE: Record<ButtonSize, string> = {
-  xs: 'h-7 px-3 text-[11px] gap-1.5 rounded-[var(--radius-md)]',
-  sm: 'h-8 px-4 text-[12px] gap-1.5 rounded-[var(--radius-md)]',
-  md: 'h-9 px-5 text-[13px] gap-2 rounded-[var(--radius-lg)]',
-  lg: 'h-11 px-6 text-[15px] gap-2 rounded-[var(--radius-lg)]',
-  icon: 'h-9 w-9 p-0 rounded-[var(--radius-lg)]',
+  xs: 'h-7 px-3 text-[11px] gap-1.5 rounded-[var(--radius-pill)]',
+  sm: 'h-8 px-4 text-[12px] gap-1.5 rounded-[var(--radius-pill)]',
+  md: 'h-9 px-5 text-[13px] gap-2 rounded-[var(--radius-pill)]',
+  lg: 'h-11 px-6 text-[15px] gap-2 rounded-[var(--radius-pill)]',
+  icon: 'h-9 w-9 p-0 rounded-[var(--radius-pill)]',
 };
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

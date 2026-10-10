@@ -16,7 +16,9 @@ export const radius = {
 /** Tipografía: familias, tamaños (px) y pesos. */
 export const typography = {
   fontFamily: {
-    sans: 'Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    // Plus Jakarta Sans es la tipografía de la marca. Las apps la cargan ellas (@font-face propio): este
+    // token nombra la familia, no la trae, así que una app que lo use sin cargar la fuente cae al respaldo.
+    sans: '"Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     mono: 'ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace',
   },
   /**
