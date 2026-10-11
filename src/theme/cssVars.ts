@@ -27,7 +27,11 @@ function derivedVars(theme: Theme): Record<string, string> {
     '--surface-muted': `color-mix(in srgb, ${c.foreground} 3%, ${c.background})`,
     '--surface-hover': `color-mix(in srgb, ${c.foreground} 5%, ${c.background})`,
     '--surface-sunken': `color-mix(in srgb, ${c.foreground} 4%, ${c.background})`,
-    '--surface-input': `color-mix(in srgb, ${c.background} 55%, ${c.surfaceCard})`,
+    // La superficie de un campo es la MISMA que la de una tarjeta, no un mezclado con el fondo de la
+    // pagina. Antes era `color-mix(background 55%, surfaceCard)`: con un fondo de pagina teñido —el de
+    // la suite es menta— el campo salia teñido tambien y se leia como deshabilitado. Lo que marca que
+    // es un campo es el borde y el hueco (`--shadow-well`), no un fondo mas sucio que el de la tarjeta.
+    '--surface-input': c.surfaceCard,
     '--topbar': c.surfaceCard,
     '--white': '#ffffff',
 
