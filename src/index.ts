@@ -31,6 +31,9 @@ export { Modal, ModalHeader, ModalBody, ModalFooter, type ModalProps } from './p
 export { Menu, MenuItem, MenuSeparator, MenuLabel, type MenuProps, type MenuItemProps } from './primitives/Menu';
 export { Tooltip, type TooltipProps } from './primitives/Tooltip';
 export { EmptyState, type EmptyStateProps } from './primitives/EmptyState';
+export { Field, type FieldProps } from './primitives/Field';
+export { ChecklistItem, type ChecklistItemProps } from './primitives/ChecklistItem';
+export { Tabs, type Tab, type TabsProps } from './primitives/Tabs';
 export { Checkbox, type CheckboxProps } from './primitives/Checkbox';
 export { Switch, type SwitchProps } from './primitives/Switch';
 export { Progress, type ProgressProps } from './primitives/Progress';
@@ -54,6 +57,7 @@ export { DataTable, type DataTableProps, type DataTableColumn } from './patterns
 // feedback / toasts
 export { Toaster } from './feedback/Toaster';
 export { ConfirmDialog, type ConfirmDialogProps } from './feedback/ConfirmDialog';
+export { useConfirm, type ConfirmRequest } from './feedback/useConfirm';
 export { toast, useToastStore, type Toast, type ToastTone } from './feedback/toastStore';
 
 // shell (marca-agnóstico, reutilizable por app de la suite)
