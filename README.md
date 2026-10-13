@@ -9,22 +9,21 @@ Sembrado desde el DS del BI (`apps/bi/src/ds`). Es la fuente de verdad del look 
 
 - **Tokens / temas** — `themes`, `BRAND`, `spacing`, `radius`, `typography`, `elevation`, `motion`,
   `zIndex`, `ThemeProvider`, `useTheme`, `applyThemeVars`.
-- **Primitives** — `Button`, `Input`, `Select`, `Card`, `Badge`, `Avatar`, `Kbd`, `Skeleton`,
-  `Spinner`, `PageLoader`, `Modal`, `Menu`, `Tooltip`, `EmptyState`.
-- **Feedback** — `Toaster`, `ConfirmDialog`, `toast`.
+- **Primitives** — `Button`, `Input`, `Textarea`, `PasswordInput`, `Select`, `Checkbox`, `Switch`,
+  `Field`, `Card`, `Badge`, `StatusBadge`, `Chip`, `Avatar`, `Kbd`, `Divider`, `Progress`, `Skeleton`,
+  `Spinner`, `PageLoader`, `Modal`, `Menu`, `Tooltip`, `Tabs`, `SegmentedToggle`, `EmptyState`,
+  `ChecklistItem`, `Typography`, `Accordion`, `Collapsible`, `TreeNode`.
+- **Data / patrones** — `DataTable`, `Pagination`, `FilterBar`, `SearchBar`, `KeyValue`, `StatCard`,
+  `StatGrid`, `NavigationCard`, `SelectableCard`, `ListItemRow`, `WizardSteps`, `WizardSummarySidebar`, `Icon`.
+- **Feedback** — `Toaster`, `toast`, `ConfirmDialog`, `useConfirm`.
 - **Shell** (marca-agnóstico) — `AppSidebar`, `PageHeader`, `ContextSwitcher`,
   `EnvironmentSwitcher`, `LanguageMenu`, `BackToAppButton`.
 
-## Instalación (GitHub Packages)
+> La lista canónica y completa de exports está en `src/index.ts`.
 
-El paquete es privado en GitHub Packages bajo el scope `@segmentados`. En el repo consumidor:
+## Instalación
 
-**`.npmrc`**
-```
-@segmentados:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
-```
-> `GITHUB_TOKEN` = un PAT con permiso `read:packages` (en CI, el `GITHUB_TOKEN` del workflow alcanza).
+Publicado en el **npm público** (`registry.npmjs.org`) bajo el scope `@segmentados`. Se instala sin token ni `.npmrc` especial:
 
 ```bash
 npm install @segmentados/ui
@@ -80,6 +79,13 @@ npm link @segmentados/ui
 
 ## Publicar
 
-Se publica **automáticamente a GitHub Packages** al crear un **Release** (ver
-`.github/workflows/publish.yml`). Flujo: `npm version <patch|minor|major>` → push del tag → crear el
-Release en GitHub → el workflow corre `build` + `npm publish`.
+Se publica en el **npm público** (`registry.npmjs.org`, acceso `public` vía `publishConfig`). Requiere ser
+miembro de la org `@segmentados` en npmjs.com con permiso de publicación, y estar logueado (`npm login`).
+
+```bash
+npm version <patch|minor|major>   # bump de versión (no se puede republicar una versión ya publicada)
+npm publish                        # prepublishOnly corre el build (tsup)
+```
+
+Para automatizar en CI/Release, `.github/workflows/publish.yml` debe apuntar a `registry.npmjs.org` y usar
+un `NPM_TOKEN` (en `NODE_AUTH_TOKEN`) en vez del `GITHUB_TOKEN`.
