@@ -13,7 +13,7 @@ export { applyThemeVars, themeCssText } from './theme/cssVars';
 export { getPortalHost } from './theme/portalHost';
 
 // primitives
-export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from './primitives/Button';
+export { Button, appButtonClassName, type ButtonProps, type ButtonVariant, type ButtonSize, type ButtonAppearance, type ButtonTone } from './primitives/Button';
 export { Input, type InputProps } from './primitives/Input';
 export { Textarea, type TextareaProps } from './primitives/Textarea';
 export { Select, type SelectProps, type SelectOption } from './primitives/Select';
