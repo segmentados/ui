@@ -1,6 +1,6 @@
 {
   "name": "@segmentados/ui",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Design system de Segmentados — tokens, temas, primitives y shell (React + Tailwind).",
   "type": "module",
   "sideEffects": false,
