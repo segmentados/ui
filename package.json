@@ -29,6 +29,7 @@
     "react-dom": ">=18"
   },
   "dependencies": {
+    "@segmentados/ui": "^0.3.2",
     "clsx": "^2.1.1",
     "lucide-react": "^1.25.0",
     "tailwind-merge": "^3.4.1",
